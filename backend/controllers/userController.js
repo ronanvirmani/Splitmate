@@ -1,13 +1,39 @@
 const User = require('../models/User')
 const mongoose = require('mongoose')
 const Group = require('../models/Group');
+const JWT = require('jsonwebtoken');
+
+const createToken = (_id) => {
+    return JWT.sign({_id}, process.env.SECRET, {expiresIn: '3d'})
+}
+
 
 // create a new user
 const createUser = async (req, res) => {
     try {
         const newUser = new User(req.body);
         await newUser.save();
-        res.status(201).json(newUser);
+
+        // Generate JWT token
+        const token = createToken(newUser._id);
+
+        res.status(201).json({newUser, token});
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+}
+
+// login a user
+const loginUser = async (req, res) => {
+    const { email, password } = req.body;
+
+    try {
+        const user = await User.login(email, password)
+
+        // Password is valid, generate JWT token
+        const token = createToken(user._id);
+
+        res.status(200).json({ user, token });
     } catch (error) {
         res.status(400).json({ error: error.message });
     }
@@ -101,6 +127,7 @@ const deleteUser = async (req, res) => {
 
 module.exports = {
     createUser,
+    loginUser,
     getUsers,
     getUser,
     getUserGroups,

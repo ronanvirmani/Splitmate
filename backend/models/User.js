@@ -2,12 +2,6 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 
 const userSchema = new mongoose.Schema({
-    username: {
-        type: String,
-        required: true,
-        unique: true,
-        minlength: 3
-    },
     email: {
         type: String,
         required: true,
@@ -41,8 +35,24 @@ userSchema.pre('save', async function(next) {
 });
 
 // Method to compare passwords
-userSchema.methods.comparePassword = async function(candidatePassword) {
-    return bcrypt.compare(candidatePassword, this.password);
-};
+userSchema.statics.login = async function (email, password){
+
+    if (!email || !password){
+        throw Error('All fields must be filled')
+    }
+    const user = await this.findOne({email})
+
+    if(!user){
+        throw Error('Incorrect Email')
+    }
+
+    const match = await bcrypt.compare(password, user.password)
+
+    if(!match){
+        throw Error('Incorrect password')
+    }
+    
+    return user
+}
 
 module.exports = mongoose.model('User', userSchema)

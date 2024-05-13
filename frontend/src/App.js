@@ -5,6 +5,8 @@ import CssBaseline from '@mui/material/CssBaseline';
 // pages and components
 import Home from './pages/Home';
 import Navbar from './components/Navbar';
+import Login from './pages/Login';
+import Signup from './pages/Signup';
 
 const darkTheme = createTheme({
   palette: {
@@ -21,6 +23,8 @@ function App() {
               <Navbar />
                 <Routes>
                   <Route path="/" element={<Home />} />
+                  <Route path="/login" element={<Login />} />
+                  <Route path="/signup" element={<Signup />} />
                 </Routes>
             </BrowserRouter>
           </div>

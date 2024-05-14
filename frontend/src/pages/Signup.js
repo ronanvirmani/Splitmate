@@ -9,6 +9,9 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
+import { useState } from 'react';
+
+import { useSignup } from '../hooks/useSignup'
 
 function Copyright(props) {
     return (
@@ -24,6 +27,19 @@ function Copyright(props) {
   }
 
 function Signup() {
+
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [firstName, setFirstName] = useState('')
+  const [lastName, setLastName] = useState('')
+  const { signup, isLoading, error } = useSignup()
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+
+    await signup(email, password, `${firstName} ${lastName}`)
+  }
+
   return (
     <Container component="main" maxWidth="xs">
         <CssBaseline />
@@ -41,7 +57,7 @@ function Signup() {
           <Typography component="h1" variant="h5">
             Sign up
           </Typography>
-          <Box component="form" noValidate sx={{ mt: 3 }}>
+          <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
                 <TextField
@@ -51,6 +67,7 @@ function Signup() {
                   fullWidth
                   id="firstName"
                   label="First Name"
+                  onChange={(e) => setFirstName(e.target.value)}
                   autoFocus
                 />
               </Grid>
@@ -59,8 +76,10 @@ function Signup() {
                   required
                   fullWidth
                   id="lastName"
+                  value={lastName}
                   label="Last Name"
                   name="lastName"
+                  onChange={(e) => setLastName(e.target.value)}
                   autoComplete="family-name"
                 />
               </Grid>
@@ -71,6 +90,7 @@ function Signup() {
                   id="email"
                   label="Email Address"
                   name="email"
+                  onChange={(e) => setEmail(e.target.value)}
                   autoComplete="email"
                 />
               </Grid>
@@ -82,6 +102,7 @@ function Signup() {
                   label="Password"
                   type="password"
                   id="password"
+                  onChange={(e) => setPassword(e.target.value)}
                   autoComplete="new-password"
                 />
               </Grid>
@@ -90,11 +111,16 @@ function Signup() {
               type="submit"
               fullWidth
               variant="contained"
+              disabled={isLoading}
               sx={{ mt: 3, mb: 2 }}
             >
               Sign Up
             </Button>
             <Grid container justifyContent="center">
+              {error && <Typography 
+                justifyContent="center"
+                color="error">{error}</Typography>
+              }
               <Grid item>
                 <Link href="/login" variant="body2">
                   Already have an account? Sign in

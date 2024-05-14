@@ -25,14 +25,20 @@ const userSchema = new mongoose.Schema({
 }, {timestamps: true})
 
 // Hash password before saving
-userSchema.pre('save', async function(next) {
-    const user = this;
-    if (!user.isModified('password')) return next();
-    const salt = await bcrypt.genSalt(10);
-    const hash = await bcrypt.hash(user.password, salt);
-    user.password = hash;
-    next();
-});
+userSchema.statics.signup = async function(email, password, name){
+
+    const exists = await this.findOne({email})
+
+    if(exists){
+        throw Error('Email already exists')
+    }
+    const salt = await bcrypt.genSalt(10)
+    const hash = await bcrypt.hash(password, salt)
+
+    const user = await this.create({email, password: hash, name})
+
+    return user
+}
 
 // Method to compare passwords
 userSchema.statics.login = async function (email, password){
@@ -51,7 +57,7 @@ userSchema.statics.login = async function (email, password){
     if(!match){
         throw Error('Incorrect password')
     }
-    
+
     return user
 }
 

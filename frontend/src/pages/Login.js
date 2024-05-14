@@ -9,6 +9,9 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
+import { FormControlLabel, Checkbox } from '@mui/material';
+import { useState } from 'react';
+import { useLogin } from '../hooks/useLogin';
 
 function Copyright(props) {
     return (
@@ -24,6 +27,17 @@ function Copyright(props) {
   }
 
 function Login() {
+
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const { login, isLoading, error } = useLogin()
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+
+    await login(email, password)
+  }
+
   return (
     <Container component="main" maxWidth="xs">
         <CssBaseline />
@@ -41,37 +55,47 @@ function Login() {
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
-          <Box component="form" noValidate sx={{ mt: 1 }}>
+          <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
             <TextField
               margin="normal"
               required
               fullWidth
-              id="email"
+              id="email"              
               label="Email Address"
               name="email"
               autoComplete="email"
+              onChange={(e) => setEmail(e.target.value)}
               autoFocus
             />
             <TextField
               margin="normal"
               required
               fullWidth
-              name="password"
+              name="password"              
               label="Password"
               type="password"
               id="password"
+              onChange={(e) => setPassword(e.target.value)}
               autoComplete="current-password"
             />
-            
+            <FormControlLabel
+              control={<Checkbox value="remember" color="primary" defaultChecked={true} />}
+              label="Remember me"
+            />
             <Button
               type="submit"
               fullWidth
               variant="contained"
+              disabled={isLoading}
               sx={{ mt: 3, mb: 2 }}
             >
               Sign In
             </Button>
             <Grid container justifyContent="center">
+              {error && <Typography 
+                justifyContent="center"
+                color="error">{error}</Typography>
+              }
               <Grid item>
                 <Link href="/signup" variant="body2">
                   {"Don't have an account? Sign Up"}

@@ -10,14 +10,16 @@ const createToken = (_id) => {
 
 // create a new user
 const createUser = async (req, res) => {
+    
+    const { email, password, name } = req.body;
+
     try {
-        const newUser = new User(req.body);
-        await newUser.save();
+        const user = await User.signup(email, password, name);
 
-        // Generate JWT token
-        const token = createToken(newUser._id);
+        // Password is valid, generate JWT token
+        const token = createToken(user._id);
 
-        res.status(201).json({newUser, token});
+        res.status(200).json({ email, token });
     } catch (error) {
         res.status(400).json({ error: error.message });
     }

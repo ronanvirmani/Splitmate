@@ -36,6 +36,11 @@ function Login() {
     e.preventDefault()
 
     await login(email, password)
+
+    // go to the dashboard if user is logged in
+    if (!error) {
+      window.location.href = '/dashboard'
+    }
   }
 
   return (

@@ -3,10 +3,11 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 
 // pages and components
-import Home from './pages/Home';
+import LandingPage from './pages/LandingPage';
 import Navbar from './components/Navbar';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
+import Dashboard from './pages/Dashboard';
 
 const darkTheme = createTheme({
   palette: {
@@ -22,9 +23,10 @@ function App() {
             <BrowserRouter>
               <Navbar />
                 <Routes>
-                  <Route path="/" element={<Home />} />
+                  <Route path="/" element={<LandingPage />} />
                   <Route path="/login" element={<Login />} />
                   <Route path="/signup" element={<Signup />} />
+                  <Route path='/dashboard' element={<Dashboard />} />
                 </Routes>
             </BrowserRouter>
           </div>

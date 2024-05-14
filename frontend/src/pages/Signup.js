@@ -38,6 +38,10 @@ function Signup() {
     e.preventDefault()
 
     await signup(email, password, `${firstName} ${lastName}`)
+
+    if (!error) {
+      window.location.href = '/dashboard'
+    }
   }
 
   return (

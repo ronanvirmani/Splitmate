@@ -19,7 +19,8 @@ function Navbar() {
     const handleClick = () => {
         logout()
     }
-
+    
+    
   return (
     <AppBar position="sticky" style={{ background: 'transparent', boxShadow: 'none'}}>
         <Container maxWidth="xl">
@@ -66,6 +67,7 @@ function Navbar() {
                                     ml:1
                                 }}/>
                             </Button>
+                            {user.email}
                         </Link>
                     )}
                     

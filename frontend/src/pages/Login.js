@@ -37,10 +37,9 @@ function Login() {
 
     await login(email, password)
 
-    // go to the dashboard if user is logged in
-    if (!error) {
-      window.location.href = '/dashboard'
-    }
+    // go to the dashboard
+    window.location.href = '/dashboard'
+
   }
 
   return (

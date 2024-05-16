@@ -25,7 +25,7 @@ const createGroup = async (req, res) => {
         return res.status(400).json({mssg:'Group could not be created'})
     }
     
-    res.status(200).json({mssg:'Group created successfully', group})
+    res.status(200).json(group)
     
 };
 

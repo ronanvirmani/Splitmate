@@ -1,30 +1,34 @@
-import { createContext, useReducer } from 'react'
+import { createContext, useReducer } from 'react';
 
-export const GroupContext = createContext()
+export const GroupsContext = createContext();
 
-export const groupReducer = (state, action) => {
+export const groupsReducer = (state, action) => {
     switch(action.type){
         case 'CREATE_GROUP':
             return { 
                 groups: [...state.groups, action.payload]
             }
-        case 'GET_GROUPS':
+        case 'SET_GROUPS':
             return {
                 groups: action.payload
             }
+        case 'DELETE_GROUP':
+            return {
+                groups: state.groups.filter(group => group._id !== action.payload)
+            }
         default:
-            return state
+            return state;
     }
 }
 
-export default GroupsContextProvider = ({ children }) => {
-    const [state, dispatch] = useReducer(groupReducer, {
+export const GroupsContextProvider = ({ children }) => {
+    const [state, dispatch] = useReducer(groupsReducer, {
         groups: []
-    })
+    });
 
     return (
-        <GroupContext.Provider value={{ ...state, dispatch }}>
+        <GroupsContext.Provider value={{ ...state, dispatch }}>
             { children }
-        </GroupContext.Provider>
-    )
+        </GroupsContext.Provider>
+    );
 }

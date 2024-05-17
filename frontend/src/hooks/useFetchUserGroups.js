@@ -1,39 +1,37 @@
-import { useState, useEffect } from 'react';
-import { useAuthContext } from '../hooks/useAuthContext';
+import { useEffect } from 'react';
+import { useAuthContext } from './useAuthContext';
+import { useGroupsContext } from './useGroupContext';
 
-export const useFetchUserGroups = () => {
-  const [groups, setGroups] = useState([]);
+const useFetchGroups = () => {
   const { user } = useAuthContext();
-
-  const fetchGroups = async () => {
-
-    console.log(user.groups)
-    try {
-      const response = await fetch(`/api/users/${user._id}/groups/`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to fetch groups');
-      }
-
-      const groupsData = await response.json();
-      setGroups(groupsData);
-    } catch (error) {
-      console.error('Error fetching groups:', error);
-    }
-  };
+  const { dispatch } = useGroupsContext();
 
   useEffect(() => {
-    console.log('User object:', user);
-  
-    if (user) {
-      fetchGroups();
-    }
-  }, [user]);
+    const fetchGroups = async () => {
+      if (!user) return;
 
-  return groups;
+      try {
+        const response = await fetch(`/api/users/${user._id}/groups/`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+
+        const json = await response.json();
+
+        if (response.ok) {
+          dispatch({ type: 'SET_GROUPS', payload: json });
+        } else {
+          console.error('Failed to fetch groups:', json);
+        }
+      } catch (err) {
+        console.error('Error fetching groups:', err);
+      }
+    };
+
+    fetchGroups();
+  }, [user, dispatch]);
 };
+
+export default useFetchGroups;

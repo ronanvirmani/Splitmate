@@ -155,18 +155,20 @@ const deleteGroup = async (req, res) => {
 // Get all items in a group
 const getGroup = async (req, res) => {
     const { groupId } = req.params;
-
+  
     try {
-        const group = await Group.findById(groupId);
-        if (!group) {
-            return res.status(404).json({ message: 'Group not found' });
-        }
-        res.json(group);
-
+      const group = await Group.findById(groupId).populate('members', 'name');
+      if (!group) {
+        return res.status(404).json({ message: 'Group not found' });
+      }
+      
+      res.json(group);
+  
     } catch (err) {
-        res.status(500).json({ message: err.message });
+      res.status(500).json({ message: err.message });
     }
-}
+  };
+  
 
 
 module.exports = {

@@ -2,10 +2,11 @@ import { useState, useEffect } from 'react';
 
 const useFetchGroupItems = (groupId) => {
   const [items, setItems] = useState([]);
+  const [members, setMembers] = useState([]);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchGroupItems = async () => {
+    const fetchGroupData = async () => {
       try {
         const response = await fetch(`/api/groups/${groupId}`, {
           method: 'GET',
@@ -18,20 +19,24 @@ const useFetchGroupItems = (groupId) => {
 
         if (response.ok) {
           setItems(group.items);
+          setMembers(group.members);
+          setError(null);
         } else {
-          console.error('Failed to fetch group items:', group);
+          console.error('Failed to fetch group data:', group);
           setError(group.message);
         }
       } catch (err) {
-        console.error('Error fetching group items:', err);
-        setError('An error occurred while fetching the group items.');
+        console.error('Error fetching group data:', err);
+        setError('An error occurred while fetching the group data.');
       }
     };
 
-    fetchGroupItems();
+    if (groupId) {
+      fetchGroupData();
+    }
   }, [groupId]);
 
-  return { items, error };
+  return { items, members, error };
 };
 
 export default useFetchGroupItems;

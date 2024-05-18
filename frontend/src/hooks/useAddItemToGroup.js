@@ -5,16 +5,16 @@ const useAddItemToGroup = () => {
 
   const addItemToGroup = async (groupId, name, price) => {
     try {
-        console.log(name, price)
+      // Ensure the price is a number
+      const parsedPrice = parseFloat(price);
+
       const response = await fetch(`/api/groups/${groupId}/addItem`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        
-        body: JSON.stringify({ name, price })
+        body: JSON.stringify({ name, price: parsedPrice })
       });
-
 
       const json = await response.json();
 

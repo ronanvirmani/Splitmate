@@ -4,8 +4,9 @@ import { useGroupsContext } from '../hooks/useGroupContext';
 import useFetchGroups from '../hooks/useFetchUserGroups';
 import useCreateGroup from '../hooks/useCreateGroup';
 import useDeleteGroup from '../hooks/useDeleteGroup';
-import useFetchGroupItems from '../hooks/useFetchGroupItems';
 import useAddItemToGroup from '../hooks/useAddItemToGroup';
+import useRemoveItemFromGroup from '../hooks/useRemoveItemFromGroup';
+import useFetchGroupItems from '../hooks/useFetchGroupItems';
 
 const Dashboard = () => {
   const { user } = useAuthContext();
@@ -13,58 +14,42 @@ const Dashboard = () => {
 
   const [name, setName] = useState('');
   const [items, setItems] = useState([]);
-  const [groupItems, setGroupItems] = useState({});
-  const [fetchGroupItemsError, setFetchGroupItemsError] = useState(null);
+  const [selectedGroupId, setSelectedGroupId] = useState(null);
 
   const [newItemName, setNewItemName] = useState('');
   const [newItemPrice, setNewItemPrice] = useState('');
   const [addItemError, setAddItemError] = useState(null);
+  const [removeItemError, setRemoveItemError] = useState(null);
 
   useFetchGroups();
   const { createGroup, error: createGroupError } = useCreateGroup();
   const { deleteGroup, error: deleteGroupError } = useDeleteGroup();
   const { addItemToGroup } = useAddItemToGroup();
+  const { removeItemFromGroup } = useRemoveItemFromGroup();
 
-  const fetchGroupItems = async (groupId) => {
-    try {
-      const response = await fetch(`/api/groups/${groupId}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      });
-
-      const group = await response.json();
-
-      if (response.ok) {
-        setGroupItems((prevGroupItems) => ({
-          ...prevGroupItems,
-          [groupId]: group.items
-        }));
-        setFetchGroupItemsError(null);
-      } else {
-        console.error('Failed to fetch group items:', group);
-        setFetchGroupItemsError(group.message);
-      }
-    } catch (err) {
-      console.error('Error fetching group items:', err);
-      setFetchGroupItemsError('An error occurred while fetching the group items.');
-    }
-  };
+  const { items: groupItems, members: groupMembers, error: fetchGroupItemsError } = useFetchGroupItems(selectedGroupId);
 
   const handleAddItem = async (groupId) => {
     const result = await addItemToGroup(groupId, newItemName, newItemPrice);
 
     if (result) {
-      setGroupItems((prevGroupItems) => ({
-        ...prevGroupItems,
-        [groupId]: [...(prevGroupItems[groupId] || []), result]
-      }));
+      setItems((prevItems) => [...prevItems, result]);
       setNewItemName('');
       setNewItemPrice('');
       setAddItemError(null);
     } else {
       setAddItemError('Failed to add item');
+    }
+  };
+
+  const handleRemoveItem = async (groupId, itemId) => {
+    const result = await removeItemFromGroup(groupId, itemId);
+
+    if (result) {
+      setItems((prevItems) => prevItems.filter((item) => item._id !== itemId));
+      setRemoveItemError(null);
+    } else {
+      setRemoveItemError('Failed to remove item');
     }
   };
 
@@ -80,15 +65,28 @@ const Dashboard = () => {
               <div>
                 <span>{group.name}</span>
                 <button onClick={() => deleteGroup(group._id)}>Delete</button>
-                <button onClick={() => fetchGroupItems(group._id)}>Show Items</button>
+                <button onClick={() => setSelectedGroupId(group._id)}>Show Items</button>
               </div>
-              <ul>
-                {groupItems[group._id] && groupItems[group._id].length > 0  &&
-                  groupItems[group._id].map((item) => (
-                    <li key={item._id}>{item.name} - ${item.price}</li>
-                  ))}
-                
-              </ul>
+              {selectedGroupId === group._id && (
+                <>
+                  <ul>
+                    {groupItems && groupItems.length > 0 &&
+                      groupItems.map((item) => (
+                        <li key={item._id}>
+                          {item.name} - ${item.price}
+                          <button onClick={() => handleRemoveItem(group._id, item._id)}>Remove</button>
+                        </li>
+                      ))}
+                  </ul>
+                  <ul>
+                    <h3>Members</h3>
+                    {groupMembers && groupMembers.length > 0 &&
+                      groupMembers.map((member) => (
+                        <li key={member._id}>{member.name}</li>
+                      ))}
+                  </ul>
+                </>
+              )}
               <form onSubmit={(e) => {
                 e.preventDefault();
                 handleAddItem(group._id);
@@ -108,6 +106,7 @@ const Dashboard = () => {
                 <button type="submit">Add Item</button>
               </form>
               {addItemError && <div className="error">{addItemError}</div>}
+              {removeItemError && <div className="error">{removeItemError}</div>}
               {fetchGroupItemsError && <div className="error">{fetchGroupItemsError}</div>}
             </li>
           ))

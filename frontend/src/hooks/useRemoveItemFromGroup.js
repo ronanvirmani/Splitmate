@@ -1,7 +1,9 @@
 import { useState } from 'react';
+import { useGroupsContext } from './useGroupContext';
 
 const useRemoveItemFromGroup = () => {
   const [error, setError] = useState(null);
+  const { dispatch } = useGroupsContext();
 
   const removeItemFromGroup = async (groupId, itemId) => {
     try {
@@ -16,6 +18,7 @@ const useRemoveItemFromGroup = () => {
       const json = await response.json();
 
       if (response.ok) {
+        dispatch({ type: 'REMOVE_GROUP_ITEM', payload: { groupId, itemId } });
         setError(null);
         return json;
       } else {

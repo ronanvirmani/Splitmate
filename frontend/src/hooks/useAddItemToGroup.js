@@ -1,11 +1,12 @@
 import { useState } from 'react';
+import { useGroupsContext } from './useGroupContext';
 
 const useAddItemToGroup = () => {
   const [error, setError] = useState(null);
+  const { dispatch } = useGroupsContext();
 
   const addItemToGroup = async (groupId, name, price) => {
     try {
-      // Ensure the price is a number
       const parsedPrice = parseFloat(price);
 
       const response = await fetch(`/api/groups/${groupId}/addItem`, {
@@ -19,6 +20,7 @@ const useAddItemToGroup = () => {
       const json = await response.json();
 
       if (response.ok) {
+        dispatch({ type: 'ADD_GROUP_ITEM', payload: { groupId, item: json } });
         setError(null);
         return json;
       } else {

@@ -107,7 +107,7 @@ const addItemToGroup = async (req, res) => {
         group.items.push(newItem);
         const newGroup = await group.save();
 
-        res.json(newGroup);
+        res.json(newItem);
     } catch (err) {
         res.status(500).json({ message: err.message });
     }

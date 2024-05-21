@@ -16,6 +16,27 @@ export const groupsReducer = (state, action) => {
             return {
                 groups: state.groups.filter(group => group._id !== action.payload)
             }
+
+        case 'ADD_GROUP_ITEM':
+            return state.map(group => {
+                if (group._id === action.payload.groupId) {
+                    return {
+                        ...group,
+                        items: [...group.items, action.payload.item]
+                    };
+                }
+                return group;
+            });
+        case 'REMOVE_GROUP_ITEM':
+            return state.map(group => {
+              if (group._id === action.payload.groupId) {
+                return {
+                  ...group,
+                  items: group.items.filter(item => item._id !== action.payload.itemId)
+                };
+              }
+                return group;
+            });
         default:
             return state;
     }

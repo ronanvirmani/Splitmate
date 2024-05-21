@@ -32,7 +32,7 @@ const createGroup = async (req, res) => {
 // Add user(s) to a group
 const addUsersToGroup = async (req, res) => {
     const { groupId } = req.params;
-    const { userId } = req.body;
+    const { userEmail } = req.body;
 
     try {
         const group = await Group.findById(groupId);
@@ -40,25 +40,29 @@ const addUsersToGroup = async (req, res) => {
             return res.status(404).json({ message: 'Group not found' });
         }
 
-        const user = await User.findById(userId);
+        const user = await User.findOne({ email: userEmail.toLowerCase() });
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
 
         // Check if user is already a member of the group
-        if (group.members.includes(userId)) {
+        if (group.members.includes(user._id)) {
             return res.status(400).json({ message: 'User is already a member of the group' });
         }
 
         // Add user to the group
-        group.members.push(userId);
+        group.members.push(user._id);
+        user.groups.push(group._id);
         await group.save();
+        await user.save(); // Don't forget to save the user as well
 
         res.json(group);
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
 }
+
+ 
 
 // Remove user(s) from a group
 const removeUsersFromGroup = async (req, res) => {

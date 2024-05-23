@@ -28,18 +28,42 @@ export const groupsReducer = (state, action) => {
                     return group;
                 })
             }
-            case 'REMOVE_GROUP_ITEM':
-                return {
-                    groups: state.groups.map(group => {
-                        if (group._id === action.payload.groupId) {
-                            return {
-                                ...group,
-                                items: group.items.filter(item => item._id !== action.payload.itemId)
-                            };
-                        }
-                        return group;
-                    })
-                };
+        case 'REMOVE_GROUP_ITEM':
+            return {
+                groups: state.groups.map(group => {
+                    if (group._id === action.payload.groupId) {
+                        return {
+                            ...group,
+                            items: group.items.filter(item => item._id !== action.payload.itemId)
+                        };
+                    }
+                    return group;
+                })
+            };
+        case 'ADD_GROUP_MEMBER':
+            return {
+              groups: state.groups.map(group => {
+                if (group._id === action.payload.groupId) {
+                  return {
+                    ...group,
+                    members: [...group.members, action.payload.user]
+                  };
+                }
+                return group;
+              })
+            };
+        case 'REMOVE_GROUP_MEMBER':
+            return {
+              groups: state.groups.map(group => {
+                if (group._id === action.payload.groupId) {
+                  return {
+                    ...group,
+                    members: group.members.filter(member => member._id !== action.payload.userId),
+                  };
+                }
+                return group;
+              }),
+            };
         default:
             return state;
     }

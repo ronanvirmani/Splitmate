@@ -54,9 +54,10 @@ const addUsersToGroup = async (req, res) => {
         group.members.push(user._id);
         user.groups.push(group._id);
         await group.save();
-        await user.save(); // Don't forget to save the user as well
+        await user.save();
 
-        res.json(group);
+        res.json({ _id: user._id, name: user.name, email: user.email });
+
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
@@ -82,14 +83,18 @@ const removeUsersFromGroup = async (req, res) => {
 
         // Remove user from the group
         group.members = group.members.filter(memberId => memberId.toString() !== userId);
-        const newGroup =  await group.save();
 
-        res.json(newGroup);
+        // Remove group from user's groups
+        user.groups = user.groups.filter(groupId => groupId.toString() !== group._id.toString());
+
+        await group.save();
+        await user.save();
+
+        res.json({ message: 'User removed from group', group });
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
-    
-}
+};
 
 // Add item to a group
 const addItemToGroup = async (req, res) => {

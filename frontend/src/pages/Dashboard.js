@@ -12,7 +12,6 @@ const Dashboard = () => {
   const { groups } = useGroupsContext();
   const [selectedGroupId, setSelectedGroupId] = useState(null);  
 
-
   const { items: groupItems, members: groupMembers } = useFetchGroupItems(selectedGroupId);
 
   useEffect(() => {

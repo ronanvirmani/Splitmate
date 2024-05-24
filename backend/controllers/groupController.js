@@ -56,12 +56,20 @@ const addUsersToGroup = async (req, res) => {
         await group.save();
         await user.save();
 
-        res.json({ _id: user._id, name: user.name, email: user.email });
+        const updatedUser = {
+            _id: user._id,
+            name: user.name,
+            email: user.email
+        };
+
+        res.json(updatedUser);
 
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
-}
+};
+
+
 
  
 
@@ -90,11 +98,11 @@ const removeUsersFromGroup = async (req, res) => {
         await group.save();
         await user.save();
 
-        res.json({ message: 'User removed from group', group });
+        res.json({ message: 'User removed from group', userId });
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
-};
+}
 
 // Add item to a group
 const addItemToGroup = async (req, res) => {
@@ -171,7 +179,7 @@ const getGroup = async (req, res) => {
         return res.status(404).json({ message: 'Group not found' });
       }
       
-      res.json(group);
+      res.json(group, group.items, group.members);
   
     } catch (err) {
       res.status(500).json({ message: err.message });

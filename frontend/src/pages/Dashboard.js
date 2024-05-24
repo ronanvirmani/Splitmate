@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useGroupsContext } from '../hooks/useGroupContext';
-import useFetchGroupItems from '../hooks/useFetchGroupItems';
-
 import { Box, Typography, Grid } from '@mui/material';
 import GroupNav from '../components/GroupNav';
 import DashboardHeader from '../components/DashboardHeader';
@@ -11,8 +9,6 @@ import Items from '../components/Items';
 const Dashboard = () => {
   const { groups } = useGroupsContext();
   const [selectedGroupId, setSelectedGroupId] = useState(null);  
-
-  const { items: groupItems, members: groupMembers } = useFetchGroupItems(selectedGroupId);
 
   useEffect(() => {
     if (groups.length > 0 && !selectedGroupId) {
@@ -33,9 +29,9 @@ const Dashboard = () => {
             <DashboardHeader group={group} />
 
             <Grid container spacing={2} sx={{ height: 'fit' }}>
-              <Members groupMembers={groupMembers} selectedGroupId={selectedGroupId} />
+              <Members selectedGroupId={selectedGroupId} />
 
-              <Items groupItems={groupItems} selectedGroupId={selectedGroupId} />
+              <Items selectedGroupId={selectedGroupId} />
             </Grid>
           </TabPanel>
         ))}

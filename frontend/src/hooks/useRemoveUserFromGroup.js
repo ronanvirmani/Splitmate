@@ -9,10 +9,8 @@ const useRemoveUserFromGroup = () => {
     try {
       const response = await fetch(`/api/groups/${groupId}/removeUser`, {
         method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ userId }),
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId })
       });
 
       const json = await response.json();

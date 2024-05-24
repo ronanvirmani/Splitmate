@@ -28,6 +28,7 @@ function Items({ selectedGroupId }) {
 
   const currentGroup = groups.find(group => group._id === selectedGroupId);
 
+
   return (
     <Grid item xs={12} md={6} sx={{ height: 'fit' }}>
       <Paper sx={{ p: 2, overflowY: 'auto', height: 'fit' }}>

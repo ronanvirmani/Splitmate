@@ -1,42 +1,24 @@
-import { useState, useEffect } from 'react';
+import { useState, useCallback } from 'react';
 
-const useFetchGroupItems = (groupId) => {
-  const [items, setItems] = useState([]);
+const useFetchGroupItems = () => {
   const [members, setMembers] = useState([]);
-  const [error, setError] = useState(null);
 
-  useEffect(() => {
-    const fetchGroupData = async () => {
-      try {
-        const response = await fetch(`/api/groups/${groupId}`, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        });
+  const fetchGroupItems = useCallback(async (groupId) => {
+    try {
+      const response = await fetch(`/api/groups/${groupId}`);
+      const data = await response.json();
 
-        const group = await response.json();
-
-        if (response.ok) {
-          setItems(group.items);
-          setMembers(group.members);
-          setError(null);
-        } else {
-          console.error('Failed to fetch group data:', group);
-          setError(group.message);
-        }
-      } catch (err) {
-        console.error('Error fetching group data:', err);
-        setError('An error occurred while fetching the group data.');
+      if (!response.ok) {
+        throw new Error(data.message || 'Failed to fetch group items');
       }
-    };
 
-    if (groupId) {
-      fetchGroupData();
+      setMembers(data.members);
+    } catch (err) {
+      console.error('Error fetching group items:', err.message || err);
     }
-  }, [groupId]);
+  }, []);
 
-  return { items, members, error };
+  return { members, fetchGroupItems };
 };
 
 export default useFetchGroupItems;

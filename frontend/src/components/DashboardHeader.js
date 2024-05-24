@@ -29,7 +29,7 @@ function DashboardHeader({ group }) {
         {group.name}
       </Typography>
       <Typography variant="subtitle1" component="div">
-        Amount you owe per member: ${splitAmount.toFixed(2)}
+        Amount you owe: ${splitAmount.toFixed(2)}
       </Typography>
     </Paper>
   );

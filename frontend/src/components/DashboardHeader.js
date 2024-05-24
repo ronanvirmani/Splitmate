@@ -20,7 +20,8 @@ function DashboardHeader({ group }) {
     } else {
       setSplitAmount(0);
     }
-  }, [total, members, setSplitAmount, fetchGroupItems]);
+    fetchGroupItems(group._id)
+  }, [total, members, setSplitAmount, fetchGroupItems, group._id]);
 
   return (
     <Paper sx={{ p: 2, mb: 4 }}>

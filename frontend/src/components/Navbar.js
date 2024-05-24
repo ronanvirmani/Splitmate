@@ -67,7 +67,6 @@ function Navbar() {
                                     ml:1
                                 }}/>
                             </Button>
-                            {user.email}
                         </Link>
                     )}
                     

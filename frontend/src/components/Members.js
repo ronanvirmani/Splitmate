@@ -23,14 +23,14 @@ function Members({ selectedGroupId }) {
 
     if (result) {
       setNewMemberEmail('');
-      fetchGroupItems(selectedGroupId); // Refetch members after adding
+      fetchGroupItems(selectedGroupId);
     }
   }, [addUsersToGroup, selectedGroupId, newMemberEmail, fetchGroupItems]);
 
   const handleRemoveMember = useCallback(async (memberId) => {
     try {
       await removeUserFromGroup(selectedGroupId, memberId);
-      fetchGroupItems(selectedGroupId); // Refetch members after removing
+      fetchGroupItems(selectedGroupId);
     } catch (error) {
       console.error('Error removing member from group:', error);
     }

@@ -1,8 +1,9 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 
 const useFetchGroupItems = () => {
   const [members, setMembers] = useState([]);
   const [items, setItems] = useState([]);
+  const [total, setTotal] = useState(0);
 
   const fetchGroupItems = useCallback(async (groupId) => {
     try {
@@ -15,12 +16,22 @@ const useFetchGroupItems = () => {
 
       setMembers(data.members);
       setItems(data.items);
+
+      // Calculate total price
+      const totalPrice = data.items.reduce((sum, item) => sum + item.price, 0);
+      console.log('Total Price:', totalPrice);
+      setTotal(totalPrice);
     } catch (err) {
       console.error('Error fetching group items:', err.message || err);
     }
   }, []);
 
-  return { members, items, fetchGroupItems };
+  useEffect(() => {
+    console.log('Members:', members);
+    console.log('Total:', total);
+  }, [members, total]);
+
+  return { members, items, total, fetchGroupItems };
 };
 
 export default useFetchGroupItems;

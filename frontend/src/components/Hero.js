@@ -8,6 +8,7 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import { useAuthContext } from '../hooks/useAuthContext'
 import { Link } from 'react-router-dom'
+import preview from '../preview.png'
 
 export default function Hero() {
 
@@ -88,18 +89,15 @@ export default function Hero() {
             </Link>
           </Stack>
         </Stack>
-        {/* <Box
+        <Box
           id="image"
           sx={(theme) => ({
             mt: { xs: 8, sm: 10 },
             alignSelf: 'center',
             height: { xs: 200, sm: 700 },
             width: '100%',
-            backgroundImage:
-              theme.palette.mode === 'light'
-                ? 'url("/static/images/templates/templates-images/hero-light.png")'
-                : 'url("/static/images/templates/templates-images/hero-dark.png")',
-            backgroundSize: 'cover',
+            backgroundImage: `url(${preview})`, // Fix here
+            backgroundSize: '100% 100%', // Fix here
             borderRadius: '10px',
             outline: '1px solid',
             outlineColor:
@@ -111,7 +109,7 @@ export default function Hero() {
                 ? `0 0 12px 8px ${alpha('#9CCCFC', 0.2)}`
                 : `0 0 24px 12px ${alpha('#033363', 0.2)}`,
           })}
-        /> */}
+        />
       </Container>
     
   );

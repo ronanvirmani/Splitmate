@@ -25,9 +25,6 @@ const useFetchGroupItems = () => {
     }
   }, []);
 
-  useEffect(() => {
-    
-  }, [members, total]);
 
   return { members, items, total, fetchGroupItems };
 };

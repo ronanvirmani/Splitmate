@@ -19,7 +19,6 @@ const useFetchGroupItems = () => {
 
       // Calculate total price
       const totalPrice = data.items.reduce((sum, item) => sum + item.price, 0);
-      console.log('Total Price:', totalPrice);
       setTotal(totalPrice);
     } catch (err) {
       console.error('Error fetching group items:', err.message || err);
@@ -27,8 +26,7 @@ const useFetchGroupItems = () => {
   }, []);
 
   useEffect(() => {
-    console.log('Members:', members);
-    console.log('Total:', total);
+    
   }, [members, total]);
 
   return { members, items, total, fetchGroupItems };

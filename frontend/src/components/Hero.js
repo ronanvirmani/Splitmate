@@ -96,8 +96,8 @@ export default function Hero() {
             alignSelf: 'center',
             height: { xs: 200, sm: 700 },
             width: '100%',
-            backgroundImage: `url(${preview})`, // Fix here
-            backgroundSize: '100% 100%', // Fix here
+            backgroundImage: `url(${preview})`,
+            backgroundSize: '100% 100%', 
             borderRadius: '10px',
             outline: '1px solid',
             outlineColor:

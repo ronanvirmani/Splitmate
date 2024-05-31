@@ -8,7 +8,22 @@ const app = express()
 
 // middleware
 app.use(express.json())
-app.use(cors())
+
+const allowedOrigins = [process.env.FRONTEND_URL]; // Ensure FRONTEND_URL is set in your environment variables
+
+const corsOptions = {
+    origin: function (origin, callback) {
+      if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
+    credentials: true, // If you need to allow credentials (e.g., cookies)
+  };
+  
+app.use(cors(corsOptions));
+
 
 app.use((req, res, next) => {
     console.log(req.path, req.method)

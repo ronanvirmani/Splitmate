@@ -7,7 +7,6 @@ const createToken = (_id) => {
     return JWT.sign({_id}, process.env.SECRET, {expiresIn: '3d'})
 }
 
-
 // create a new user
 const createUser = async (req, res) => {
     

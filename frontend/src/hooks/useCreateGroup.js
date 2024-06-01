@@ -2,6 +2,9 @@ import { useState } from 'react';
 import { useAuthContext } from './useAuthContext';
 import { useGroupsContext } from './useGroupContext';
 
+const API_URL = process.env.REACT_APP_API_URL;
+
+
 const useCreateGroup = () => {
   const { user } = useAuthContext();
   const { dispatch } = useGroupsContext();
@@ -16,7 +19,7 @@ const useCreateGroup = () => {
     const group = { name, items };
 
     try {
-      const response = await fetch(`/api/groups/${user._id}`, {
+      const response = await fetch(`${API_URL}/api/groups/${user._id}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

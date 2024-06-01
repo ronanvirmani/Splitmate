@@ -1,6 +1,9 @@
 import { useState } from 'react'
 import { useAuthContext } from './useAuthContext'
 
+const API_URL = process.env.REACT_APP_API_URL;
+
+
 export const useLogin = () => {
   const [error, setError] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
@@ -10,7 +13,7 @@ export const useLogin = () => {
     setIsLoading(true)
     setError(null)
 
-    const response = await fetch('https://splitmate-backend.onrender.com/api/users/login', {
+    const response = await fetch(`${API_URL}/api/users/login`, {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({ email, password })

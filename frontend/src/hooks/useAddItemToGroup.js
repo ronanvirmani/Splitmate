@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { useGroupsContext } from './useGroupContext';
 
+const API_URL = process.env.REACT_APP_API_URL;
+
 const useAddItemToGroup = () => {
   const [error, setError] = useState(null);
   const { dispatch } = useGroupsContext();
@@ -9,7 +11,7 @@ const useAddItemToGroup = () => {
     try {
       const parsedPrice = parseFloat(price);
 
-      const response = await fetch(`/api/groups/${groupId}/addItem`, {
+      const response = await fetch(`${API_URL}/api/groups/${groupId}/addItem`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

@@ -2,6 +2,9 @@ import { useEffect } from 'react';
 import { useAuthContext } from './useAuthContext';
 import { useGroupsContext } from './useGroupContext';
 
+const API_URL = process.env.REACT_APP_API_URL;
+
+
 const useFetchGroups = () => {
   const { user } = useAuthContext();
   const { dispatch } = useGroupsContext();
@@ -11,7 +14,7 @@ const useFetchGroups = () => {
       if (!user) return;
 
       try {
-        const response = await fetch(`/api/users/${user._id}/groups/`, {
+        const response = await fetch(`${API_URL}/api/users/${user._id}/groups/`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json'

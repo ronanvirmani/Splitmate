@@ -1,13 +1,16 @@
 import { useState } from 'react';
 import { useGroupsContext } from './useGroupContext';
 
+const API_URL = process.env.REACT_APP_API_URL;
+
+
 const useRemoveItemFromGroup = () => {
   const [error, setError] = useState(null);
   const { dispatch } = useGroupsContext();
 
   const removeItemFromGroup = async (groupId, itemId) => {
     try {
-      const response = await fetch(`/api/groups/${groupId}/removeItem`, {
+      const response = await fetch(`${API_URL}/api/groups/${groupId}/removeItem`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json'

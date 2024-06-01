@@ -1,11 +1,14 @@
 import { useGroupsContext } from './useGroupContext';
 
+const API_URL = process.env.REACT_APP_API_URL;
+
+
 const useAddUserToGroup = () => {
   const { dispatch } = useGroupsContext();
 
   const addUsersToGroup = async (groupId, userEmail) => {
     try {
-      const response = await fetch(`/api/groups/${groupId}/addUser`, {
+      const response = await fetch(`${API_URL}/api/groups/${groupId}/addUser`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ userEmail })

@@ -1,13 +1,16 @@
 import { useState } from 'react';
 import { useGroupsContext } from './useGroupContext';
 
+const API_URL = process.env.REACT_APP_API_URL;
+
+
 const useDeleteGroup = () => {
   const { dispatch } = useGroupsContext();
   const [error, setError] = useState(null);
 
   const deleteGroup = async (groupId) => {
     try {
-      const response = await fetch(`https://splitmate-backend.onrender.com/api/groups/${groupId}`, {
+      const response = await fetch(`${API_URL}/api/groups/${groupId}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json'

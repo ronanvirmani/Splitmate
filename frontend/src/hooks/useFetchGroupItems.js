@@ -1,5 +1,8 @@
 import { useState, useCallback, useEffect } from 'react';
 
+const API_URL = process.env.REACT_APP_API_URL;
+
+
 const useFetchGroupItems = () => {
   const [members, setMembers] = useState([]);
   const [items, setItems] = useState([]);
@@ -7,7 +10,7 @@ const useFetchGroupItems = () => {
 
   const fetchGroupItems = useCallback(async (groupId) => {
     try {
-      const response = await fetch(`/api/groups/${groupId}`);
+      const response = await fetch(`${API_URL}/api/groups/${groupId}`);
       const data = await response.json();
 
       if (!response.ok) {

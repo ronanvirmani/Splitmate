@@ -17,7 +17,9 @@ const corsOptions = {
     credentials: true, 
 };
 
-app.use(cors(corsOptions));
+app.use(cors({
+    origin: ['http://localhost:3000', allowedOrigins],
+}));
 
 // Logging Middleware
 app.use((req, res, next) => {

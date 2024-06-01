@@ -10,10 +10,10 @@ function LandingPage() {
 
   const { user } = useAuthContext();
 
-  if (user){
-    //redirect to the dashboard
-    window.location.href = '/dashboard';
-  }
+  // if (user){
+  //   //redirect to the dashboard
+  //   window.location.href = '/dashboard';
+  // }
 
   return (
     <Box sx={{ bgcolor: 'background.default' }}>

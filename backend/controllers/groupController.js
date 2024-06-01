@@ -40,7 +40,7 @@ const addUsersToGroup = async (req, res) => {
             return res.status(404).json({ message: 'Group not found' });
         }
 
-        const user = await User.findOne({ email: userEmail.toLowerCase() });
+        const user = await User.findOne({ email: userEmail });
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }

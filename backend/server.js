@@ -10,11 +10,11 @@ const app = express();
 app.use(express.json());
 
 // CORS Configuration
-const allowedOrigins = [process.env.FRONTEND_URL]; // Ensure FRONTEND_URL is set in your environment variables
+const allowedOrigins = [process.env.FRONTEND_URL];
 
 const corsOptions = {
-    origin: '*', // Allow all origins (for debugging purposes)
-    credentials: true, // If you need to allow credentials (e.g., cookies)
+    origin: '*', 
+    credentials: true, 
 };
 
 app.use(cors(corsOptions));

@@ -16,9 +16,10 @@ const corsOptions = {
     origin: '*', 
     credentials: true, 
 };
+console.log('allowedOrigins:', allowedOrigins);
 
 app.use(cors({
-    origin: ['http://localhost:3000', allowedOrigins],
+    origin: ['http://localhost:3000', "https://splitmate-frontend.onrender.com"],
 }));
 
 // Logging Middleware

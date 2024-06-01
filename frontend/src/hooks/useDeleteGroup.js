@@ -7,7 +7,7 @@ const useDeleteGroup = () => {
 
   const deleteGroup = async (groupId) => {
     try {
-      const response = await fetch(`/api/groups/${groupId}`, {
+      const response = await fetch(`https://splitmate-backend.onrender.com/api/groups/${groupId}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json'

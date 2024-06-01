@@ -9,7 +9,7 @@ const useAddItemToGroup = () => {
     try {
       const parsedPrice = parseFloat(price);
 
-      const response = await fetch(`/api/groups/${groupId}/addItem`, {
+      const response = await fetch(`https://splitmate-backend.onrender.com/api/groups/${groupId}/addItem`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

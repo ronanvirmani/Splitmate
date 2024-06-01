@@ -33,6 +33,7 @@ export const useSignup = () => {
 
       // update loading state
       setIsLoading(false)
+      return true
     }
   }
 

@@ -7,7 +7,7 @@ const useRemoveItemFromGroup = () => {
 
   const removeItemFromGroup = async (groupId, itemId) => {
     try {
-      const response = await fetch(`https://splitmate-backend.onrender.com/api/groups/${groupId}/removeItem`, {
+      const response = await fetch(`/api/groups/${groupId}/removeItem`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json'

@@ -22,6 +22,7 @@ app.use(cors(corsOptions));
 
 // Logging Middleware
 app.use((req, res, next) => {
+    console.log(`Request URL: ${req.url}`);
     next();
 });
 

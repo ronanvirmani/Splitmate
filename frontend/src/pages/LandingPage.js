@@ -6,7 +6,7 @@ import { useAuthContext } from '../hooks/useAuthContext';
 
 
 
-function Home() {
+function LandingPage() {
 
   const { user } = useAuthContext();
 
@@ -23,4 +23,4 @@ function Home() {
   )
 }
 
-export default Home
+export default LandingPage

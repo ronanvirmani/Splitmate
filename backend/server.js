@@ -10,16 +10,27 @@ const app = express();
 app.use(express.json());
 
 // CORS Configuration
-const allowedOrigins = [process.env.FRONTEND_URL, 'http://localhost:3000', "https://splitmate-frontend.onrender.com"];
+const allowedOrigins = [process.env.FRONTEND_URL, 'http://localhost:3000', 'https://splitmate-frontend.onrender.com'];
 const corsOptions = {
-    origin: "*",
+    origin: function (origin, callback) {
+        // Allow requests with no origin (like mobile apps, curl requests)
+        if (!origin) return callback(null, true);
+        if (allowedOrigins.indexOf(origin) === -1) {
+            const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
+            return callback(new Error(msg), false);
+        }
+        return callback(null, true);
+    },
     credentials: true,
 };
 
 app.use(cors(corsOptions));
 
+app.use(cors(corsOptions));
+
 // Logging Middleware
 app.use((req, res, next) => {
+    console.log(`${req.method} ${req.path}`); // Log method and path of each request
     next();
 });
 

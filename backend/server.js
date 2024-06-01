@@ -12,7 +12,7 @@ const app = express();
 app.use(express.json());
 
 // CORS Configuration
-const allowedOrigins = [process.env.FRONTEND_URL, 'http://localhost:3000'];
+const allowedOrigins = [process.env.FRONTEND_URL, 'http://localhost:3000', "https://splitmate-frontend.onrender.com/dashboard"];
 const corsOptions = {
     origin: allowedOrigins,
     credentials: true,

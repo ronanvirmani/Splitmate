@@ -21,7 +21,8 @@ export const useSignup = () => {
 
     if (!response.ok) {
       setIsLoading(false)
-      setError(json.error)
+      setError("account creation failed")
+      return false
     }
     if (response.ok) {
       // save the user to local storage

@@ -37,9 +37,11 @@ function Signup() {
   const handleSubmit = async (e) => {
     e.preventDefault()
 
-    await signup(email, password, `${firstName} ${lastName}`)
+    const success = await signup(email, password, `${firstName} ${lastName}`)
 
-    window.location.href = '/dashboard'
+    if (success){
+        window.location.href = '/dashboard'
+    }
 
   }
 
@@ -120,15 +122,17 @@ function Signup() {
               Sign Up
             </Button>
             <Grid container justifyContent="center">
-              {error && <Typography 
-                justifyContent="center"
-                color="error">{error}</Typography>
-              }
               <Grid item>
                 <Link href="/login" variant="body2">
                   Already have an account? Sign in
                 </Link>
               </Grid>
+            </Grid>
+            <Grid container justifyContent="center">
+              {error && <Typography 
+                justifyContent="center"
+                color="error">{error}</Typography>
+              }
             </Grid>
           </Box>
         </Box>

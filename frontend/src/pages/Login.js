@@ -33,14 +33,15 @@ function Login() {
   const { login, isLoading, error } = useLogin()
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
 
-    await login(email, password)
+    const success = await login(email, password);
 
-    // go to the dashboard
-    window.location.href = '/dashboard'
-
-  }
+    // Only go to the dashboard if login was successful
+    if (success) {
+      window.location.href = '/dashboard';
+    }
+  };
 
   return (
     <Container component="main" maxWidth="xs">
@@ -96,15 +97,17 @@ function Login() {
               Sign In
             </Button>
             <Grid container justifyContent="center">
-              {error && <Typography 
-                justifyContent="center"
-                color="error">{error}</Typography>
-              }
               <Grid item>
                 <Link href="/signup" variant="body2">
                   {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>
+            </Grid>
+            <Grid container justifyContent="center">
+              {error && <Typography 
+                justifyContent="center"
+                color="error">{error}</Typography>
+              }
             </Grid>
           </Box>
         </Box>

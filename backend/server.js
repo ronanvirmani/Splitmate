@@ -3,6 +3,7 @@ require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const path = require('path');
 
 const app = express();
 
@@ -26,8 +27,6 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
-app.use(cors(corsOptions));
-
 // Logging Middleware
 app.use((req, res, next) => {
     console.log(`${req.method} ${req.path}`); // Log method and path of each request
@@ -40,6 +39,12 @@ const groupRoutes = require('./routes/groupRoutes');
 
 app.use('/api/users', userRoutes);
 app.use('/api/groups', groupRoutes);
+
+app.use(express.static(path.join(__dirname, '../frontend/build')));
+
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../frontend/build', 'index.html'));
+});
 
 // MongoDB Connection
 mongoose.connect(process.env.MONGO_URI)

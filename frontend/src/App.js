@@ -17,8 +17,6 @@ const darkTheme = createTheme({
 
 function App() {
 
-  console.log("API URL:", process.env.REACT_APP_API_URL);
-
   return (
     <ThemeProvider theme={darkTheme}>
         <CssBaseline />
